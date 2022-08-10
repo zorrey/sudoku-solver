@@ -1,4 +1,5 @@
 .vscode/*
 .env
+.temp
 .glitch-assets
 node_modules/
