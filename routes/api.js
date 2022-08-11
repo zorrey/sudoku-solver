@@ -8,14 +8,9 @@ const matrixCreator = require('../controllers/sudoku-solver.js');
 
 
 module.exports = function (app) {
- // let matrixCreator = new MatrixCreator;
-  let solver = new SudokuSolver();
-  //console.log(solver.matrixCreator("..9..5.1.85.4....2432......1...69.83.9.....6.62.71...9......1945....4.37.4.3..6.."));
-let matrix = [...solver.matrixCreator("..9..5.1.85.4....2432......1...69.83.9.....6.62.71...9......1945....4.37.4.3..6..")];
-
-  let solvedMatrix = solver.solve(matrix);
- console.log('solvedMatrix: ', solvedMatrix);
   
+  let solver = new SudokuSolver();
+    
   app.route('/api/check')
     .post((req, res) => {
 
@@ -24,7 +19,7 @@ let matrix = [...solver.matrixCreator("..9..5.1.85.4....2432......1...69.83.9...
   app.route('/api/solve')
     .post((req, res) => {
       const { puzzle } = req.body;
-      console.log(req.body);
+      console.log('req.body: ',req.body);
       if(!puzzle) { 
         console.log('error: Required field missing' );
         return res.json({error: 'Required field missing' });     
@@ -37,12 +32,16 @@ let matrix = [...solver.matrixCreator("..9..5.1.85.4....2432......1...69.83.9...
         console.log( 'error: Invalid characters in puzzle'  );
         return res.json({ error: 'Invalid characters in puzzle' });     
       }
-      let answer = solver.solve(puzzle);
+      let datapuzzle = [...solver.matrixCreator(puzzle)];
+      let answer = solver.solve(datapuzzle);
+      
+      console.log('solver.solve(datapuzzle): ', solver.solve(datapuzzle))
+      console.log('answer: ', answer)
       if(!answer) {
         console.log("cannot be solved!!!")
         return res.json({ error: 'Puzzle cannot be solved' });
       } else{
-       return res.json({solution: answer});
+       return res.json({solution: solver.stringReturn(answer)});
       }
     });
 };

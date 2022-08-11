@@ -61,24 +61,23 @@ class SudokuSolver {
   }
 
   solve(matrix) {   
-   // let matrix = this.matrixCreator(puzzleString);
-   // console.log("matrix 2:--", matrix)
     let row = this.isCellVoid(matrix).row;
     let col = this.isCellVoid(matrix).col;
-    console.log("row , col:", row, col)
-    console.log("isCellVoid:---", this.isCellVoid(matrix))
+    //console.log("isCellVoid:---", this.isCellVoid(matrix))
 
-    //if(!matrix) return console.log('error: string invalid');
+    if(matrix==[] || !matrix) return console.log('error: string invalid');
 
     if(this.isCellVoid(matrix).isZero) return true;
     
-    for(let num = 1; num<=9; num++){
+    
+    for(let num = 1; num <= 9; num++){
+      console.log('num', num);
 
       if(this.isUnique(matrix, row, col, num)){
-        console.log('this.isUnique(matrix, row, col, num)----', this.isUnique(matrix, row, col, num))
+     //   console.log('this.isUnique(matrix, row, col, num)----', this.isUnique(matrix, row, col, num))
         //when unique in row, column and square assign the cell to the number
         matrix[row][col] = num;
-        console.log('matrix[row][col]=nam--->', matrix[row][col]);
+        //console.log('matrix[row][col]=nam--->', matrix[row][col]);
         //if all other empty cells are filled and valid sudoku is solved
         if(this.solve(matrix))
         return matrix;
@@ -110,20 +109,22 @@ matrixCreator(puzzleString){
   return newMatrix;
 }
 
-matrixPrint(solvedmatrix){
-  for(let i=0;i<9;i++){
-    for(let j=0;j<9;j++){
-      console.log(solvedmatrix[i][j] );
-    }
-    //console.log('\n');
-  }
+stringReturn(datapuzzle){
+  return datapuzzle.reduce((acc, item) =>{
+   item = [...item.map(el=> {
+      if(el==0) el = '.';
+       return el;
+    })]
+    acc += (item.join(''));
+    return acc;
+  }, [])
 }
-
 }
+//let solver = new SudokuSolver;
 
-
+//console.log("returnString: ", solver.stringReturn(solver.matrixCreator("..9..5.1.85.4....2432......1...69.83.9.....6.62.71...9......1945....4.37.4.3..6..")));
 //console.log(matrixCreator("..9..5.1.85.4....2432......1...69.83.9.....6.62.71...9......1945....4.37.4.3..6.."));
 
 module.exports = SudokuSolver;
-//module.exports = matrixCreator;
+
 
