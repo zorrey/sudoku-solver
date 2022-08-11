@@ -5,7 +5,7 @@ class SudokuSolver {
 
   validate(puzzleString) {}
 
-  isCellVoid(matrix) {
+/*   isCellVoid(matrix) {
     let cells = {isZero: true, row: -1, col:-1};
     //let matrix = this.matrixCreator(puzzleString);
     //console.log(matrix);
@@ -23,7 +23,7 @@ class SudokuSolver {
     }
     return cells;
 
-  }
+  } */
 
   checkRowPlacement(puzzleString, row, column, value) {
 
@@ -52,7 +52,7 @@ class SudokuSolver {
     let rStart= row - row % 3;
     let cStart= col - col % 3;
     for(let i=rStart; i < rStart+3; i++){
-      for(let j=rStart; j < cStart+3; j++) {
+      for(let j=cStart; j < cStart+3; j++) {
         if (matrix[i][j]==num) return false;
       }
     } 
