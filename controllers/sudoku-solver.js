@@ -5,7 +5,7 @@ class SudokuSolver {
 
   validate(puzzleString) {}
 
-/*   isCellVoid(matrix) {
+  isCellVoid(matrix) {
     let cells = {isZero: true, row: -1, col:-1};
     //let matrix = this.matrixCreator(puzzleString);
     //console.log(matrix);
@@ -23,7 +23,7 @@ class SudokuSolver {
     }
     return cells;
 
-  } */
+  }
 
   checkRowPlacement(puzzleString, row, column, value) {
 
@@ -63,28 +63,14 @@ class SudokuSolver {
   solve(matrix) {   
    // let matrix = this.matrixCreator(puzzleString);
    // console.log("matrix 2:--", matrix)
-    let row = -1;
-    let col = -1;
-    
-    let isFilled = true;
+    let row = this.isCellVoid(matrix).row;
+    let col = this.isCellVoid(matrix).col;
+    console.log("row , col:", row, col)
+    console.log("isCellVoid:---", this.isCellVoid(matrix))
 
-    for(let i=0;i<9;i++){
-      for(let j=0;j<9;j++){
-        if(matrix[i][j]==0){
-          row = i;
-          col =j;
-          console.log("row , col:", row, col)
-          isFilled = false;
-          break;
-        }
-      }
-     if(!isFilled)
-      break ; 
-  }
-    
     //if(!matrix) return console.log('error: string invalid');
 
-    if(isFilled) return true;
+    if(this.isCellVoid(matrix).isZero) return true;
     
     for(let num = 1; num<=9; num++){
 
@@ -94,10 +80,8 @@ class SudokuSolver {
         matrix[row][col] = num;
         console.log('matrix[row][col]=nam--->', matrix[row][col]);
         //if all other empty cells are filled and valid sudoku is solved
-        if(this.solve(matrix)){
-          console.log('matrix during process:--->', matrix);
-        return true;
-      }
+        if(this.solve(matrix))
+        return matrix;
         //else cell is back to zero and num is changed to the next option
         else
         matrix[row][col] = 0;
