@@ -35,7 +35,7 @@ solver.matrixPrint("matrix print soved matrix", matrix);
         console.log( 'error: Invalid characters in puzzle'  );
         return res.json({ error: 'Invalid characters in puzzle' });     
       }
-      let answer = solver.solve(puzzle);
+      let answer = solver.solve([...solver.matrixCreator(puzzle)]);
       if(!answer) {
         console.log("cannot be solved!!!")
         return res.json({ error: 'Puzzle cannot be solved' });
