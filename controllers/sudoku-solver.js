@@ -36,6 +36,60 @@ class SudokuSolver {
   checkRegionPlacement(puzzleString, row, column, value) {
 
   }
+/*   checkSum(matrix){
+    let valid = true;
+    for(let i=0; i<9; i++){
+      let sum = matrix[i].reduce((sum, item)=>{
+                        sum += item;
+                         },0) ;
+      if(sum != 45) {
+        valid = false;
+        break;
+       }                    
+      }
+      for( let j=0; j<9; j++ ){
+        let sum=0;
+        for(let i=0; i<9; i++){
+        sum += matrix[i][j];
+        }
+        if(sum!=45){
+          valid = false;
+          break;
+        }
+      }
+      for(let i=0; i<9; i+=3){
+        for(let j=0; j<9; j+=3){
+          let sum=0;
+          for(let r=i; r<i+3; r++){
+            sum += matrix[r].reduce((acc, item)=>{
+              acc += item;
+            },0)
+          }
+          if(sum != 45){
+            valid = false;
+            break;
+          }
+        }
+      }
+      return valid;
+    } */ //end checkSum
+
+    checkInputPuzzle(data){
+      for (let i=0; i<9; i++){
+                console.log('data[i]:  ',data[i])
+      data[i].forEach((item, indx)=>{
+        if(item != 0) {
+           if(this.isUnique(data, i , indx, item)==false){
+            //console.log('this.isUnique(matrix, i , idx, item)', this.isUnique( data, i , indx, item ));
+            //console.log( 'matrix, i , idx, item', data, i, indx, item );
+            return false;            
+          }}
+        });
+        
+      }
+      return true;
+    }
+
 
   isUnique(matrix, row, col, num){
     //check row
@@ -61,11 +115,14 @@ class SudokuSolver {
   }
 
   solve(matrix) {   
+    let flag = true;
     let row = this.isCellVoid(matrix).row;
     let col = this.isCellVoid(matrix).col;
     //console.log("isCellVoid:---", this.isCellVoid(matrix))
+    console.log("this.checkInputPuzzle(matrix)", this.checkInputPuzzle(matrix))
 
     if(matrix==[] || !matrix) return console.log('error: string invalid');
+    //if(!this.checkInputPuzzle(matrix)) return false;
 
     if(this.isCellVoid(matrix).isZero) return true;
     
@@ -82,13 +139,14 @@ class SudokuSolver {
         if(this.solve(matrix))
         return matrix;
         //else cell is back to zero and num is changed to the next option
-        else
-        matrix[row][col] = 0;
-      }   
+        else 
+          matrix[row][col] = 0;      
+        }  
+        if(this.checkInputPuzzle(matrix)) continue
+        else return false;
     }    
     return false;    
   }
-
 
 matrixCreator(puzzleString){
   //if (puzzleString.length !== 81) return null;
@@ -120,9 +178,10 @@ stringReturn(datapuzzle){
   }, [])
 }
 }
-//let solver = new SudokuSolver;
+let solver = new SudokuSolver;
 
-//console.log("returnString: ", solver.stringReturn(solver.matrixCreator("..9..5.1.85.4....2432......1...69.83.9.....6.62.71...9......1945....4.37.4.3..6..")));
+console.log("returnString: ", 
+solver.checkInputPuzzle(solver.matrixCreator("..9..5.1.85.4....2432......1...69.83.9.....6.62.71...9......1945....4.37.4.3..6..")));
 //console.log(matrixCreator("..9..5.1.85.4....2432......1...69.83.9.....6.62.71...9......1945....4.37.4.3..6.."));
 
 module.exports = SudokuSolver;
