@@ -1,3 +1,5 @@
+const { default: node } = require("@babel/register/lib/node");
+
 const textArea = document.getElementById("text-input");
 const coordInput = document.getElementById("coord");
 const valInput = document.getElementById("val");
@@ -44,12 +46,19 @@ async function getSolved() {
     body: JSON.stringify(stuff)
   })
   const parsed = await data.json();
+  const msg = data.text;
+
   if (parsed.error) {
     errorMsg.innerHTML = `<code>${JSON.stringify(parsed, null, 2)}</code>`;
     setTimeout(function(){errorMsg.value.fadeOut()}, 3000);
     return
   }
   fillpuzzle(parsed.solution)
+}
+
+async function writeInfo(){
+  let doc = document.getElementById("error-msg");
+  doc.textContent = msg;
 }
 
 async function getChecked() {

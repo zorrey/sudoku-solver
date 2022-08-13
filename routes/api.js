@@ -13,6 +13,7 @@ module.exports = function (app) {
     
   app.route('/api/check')
     .post((req, res) => {
+      console.log("req.body - check:", req.body);
 
     });
     
@@ -36,13 +37,15 @@ module.exports = function (app) {
       let answer = solver.solve(datapuzzle);
       
       console.log('solver.solve(datapuzzle): ', solver.solve(datapuzzle))
-      console.log('answer: ', answer)
+      //console.log('answer: ', answer)
       if(!answer) {
         console.log("cannot be solved!!!")
         return res.json({ error: 'Puzzle cannot be solved' });
       } else{
-        
-       return res.json({solution: solver.stringReturn(answer)});
+        let solvedPuzzle = solver.stringReturn(answer);
+        console.log('solved!');
+       return res.json({solution: solvedPuzzle,
+                          text: "solved!"});
       }
     });
 };
