@@ -1,7 +1,7 @@
 'use strict';
 
 const SudokuSolver = require('../controllers/sudoku-solver.js');
-const matrixCreator = require('../controllers/sudoku-solver.js');
+//const matrixCreator = require('../controllers/sudoku-solver.js');
 
 
 
@@ -41,6 +41,7 @@ module.exports = function (app) {
         console.log("cannot be solved!!!")
         return res.json({ error: 'Puzzle cannot be solved' });
       } else{
+        
        return res.json({solution: solver.stringReturn(answer)});
       }
     });

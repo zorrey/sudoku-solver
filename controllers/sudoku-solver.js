@@ -76,16 +76,21 @@ class SudokuSolver {
 
     checkInputPuzzle(data){
       for (let i=0; i<9; i++){
-                console.log('data[i]:  ',data[i])
-      data[i].forEach((item, indx)=>{
-        if(item != 0) {
-           if(this.isUnique(data, i , indx, item)==false){
-            //console.log('this.isUnique(matrix, i , idx, item)', this.isUnique( data, i , indx, item ));
-            //console.log( 'matrix, i , idx, item', data, i, indx, item );
-            return false;            
-          }}
-        });
+        for(let j=0; j<9 ; j++){
+          if(data[i][j]!=0){
+            let num = data[i][j];
+            let row = i;
+            let col = j;
+            data[i][j]=0;
+           // console.log('row, col, num', row, col, num)
+           // console.log('isUnique', this.isUnique(data, row, col,num))
+            if(this.isUnique(data, row, col,num)==false) {
+              return false;
+            }
+            else data[i][j]=num;
+        }
         
+        }
       }
       return true;
     }
@@ -119,16 +124,16 @@ class SudokuSolver {
     let row = this.isCellVoid(matrix).row;
     let col = this.isCellVoid(matrix).col;
     //console.log("isCellVoid:---", this.isCellVoid(matrix))
-    console.log("this.checkInputPuzzle(matrix)", this.checkInputPuzzle(matrix))
+   // console.log("this.checkInputPuzzle(matrix)", this.checkInputPuzzle(matrix))
 
+    if(this.checkInputPuzzle(matrix) == false){return false};
     if(matrix==[] || !matrix) return console.log('error: string invalid');
     //if(!this.checkInputPuzzle(matrix)) return false;
 
-    if(this.isCellVoid(matrix).isZero) return true;
-    
+    if(this.isCellVoid(matrix).isZero) return true;    
     
     for(let num = 1; num <= 9; num++){
-      console.log('num', num);
+      //console.log('num', num);
 
       if(this.isUnique(matrix, row, col, num)){
      //   console.log('this.isUnique(matrix, row, col, num)----', this.isUnique(matrix, row, col, num))
@@ -179,9 +184,11 @@ stringReturn(datapuzzle){
 }
 }
 let solver = new SudokuSolver;
+let grid = solver.matrixCreator("..9..5.1.85.4....2432......1...69.83.9.....6.62.71...9......1945....4.37.4.3..6..");
+//console.log("returnString: ", solver.checkInputPuzzle(grid));
+//console.log('isUnique', solver.isUnique(grid, 0, 2, 9));
 
-console.log("returnString: ", 
-solver.checkInputPuzzle(solver.matrixCreator("..9..5.1.85.4....2432......1...69.83.9.....6.62.71...9......1945....4.37.4.3..6..")));
+//console.log(solver.matrixCreator("..9..5.1.85.4....2432......1...69.83.9.....6.62.71...9......1945....4.37.4.3..6.."));
 //console.log(matrixCreator("..9..5.1.85.4....2432......1...69.83.9.....6.62.71...9......1945....4.37.4.3..6.."));
 
 module.exports = SudokuSolver;

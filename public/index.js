@@ -9,6 +9,12 @@ document.addEventListener("DOMContentLoaded", () => {
   fillpuzzle(textArea.value);
 });
 
+
+/* $(document).ready(function(){
+  setTimeout(function(){$('.messages.status').fadeOut();}, 8000);
+  $(window).click(function(){$('.messages.status').fadeOut();});
+}); */
+
 textArea.addEventListener("input", () => {
   fillpuzzle(textArea.value);
 });
@@ -40,6 +46,7 @@ async function getSolved() {
   const parsed = await data.json();
   if (parsed.error) {
     errorMsg.innerHTML = `<code>${JSON.stringify(parsed, null, 2)}</code>`;
+    setTimeout(function(){errorMsg.value.fadeOut()}, 3000);
     return
   }
   fillpuzzle(parsed.solution)
