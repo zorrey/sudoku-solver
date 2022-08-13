@@ -50,15 +50,16 @@ async function getSolved() {
 
   if (parsed.error) {
     errorMsg.innerHTML = `<code>${JSON.stringify(parsed, null, 2)}</code>`;
-    setTimeout(function(){errorMsg.value.fadeOut()}, 3000);
+    
     return
   }
-  fillpuzzle(parsed.solution)
+  fillpuzzle(parsed.solution);
+  writeInfo("error-msg", msg);
 }
 
-async function writeInfo(){
-  let doc = document.getElementById("error-msg");
-  doc.textContent = msg;
+function writeInfo(id, msg ){
+  let doc = document.getElementById(id);
+  doc.innerText = msg;
 }
 
 async function getChecked() {
