@@ -3,7 +3,11 @@
 
 class SudokuSolver {
 
-  validate(puzzleString) {}
+  validate(puzzleString) {
+    if(puzzleString.length != 81)
+    return false
+    else return true;
+  }
 
   isCellVoid(matrix) {
     let cells = {isZero: true, row: -1, col:-1};
@@ -26,7 +30,7 @@ class SudokuSolver {
   }
 
   checkRowPlacement(puzzleString, row, column, value) {
-
+    
   }
 
   checkColPlacement(puzzleString, row, column, value) {

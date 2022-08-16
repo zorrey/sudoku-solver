@@ -1,4 +1,4 @@
-const { default: node } = require("@babel/register/lib/node");
+//const { default: node } = require("@babel/register");
 
 const textArea = document.getElementById("text-input");
 const coordInput = document.getElementById("coord");
@@ -11,11 +11,6 @@ document.addEventListener("DOMContentLoaded", () => {
   fillpuzzle(textArea.value);
 });
 
-
-/* $(document).ready(function(){
-  setTimeout(function(){$('.messages.status').fadeOut();}, 8000);
-  $(window).click(function(){$('.messages.status').fadeOut();});
-}); */
 
 textArea.addEventListener("input", () => {
   fillpuzzle(textArea.value);
@@ -37,6 +32,7 @@ function fillpuzzle(data) {
 
 async function getSolved() {
   const stuff = {"puzzle": textArea.value}
+  let doc = document.getElementById("error-msg");
   const data = await fetch("/api/solve", {
     method: "POST",
     headers: {
@@ -46,25 +42,37 @@ async function getSolved() {
     body: JSON.stringify(stuff)
   })
   const parsed = await data.json();
-  const msg = data.text;
+  const msg = parsed.text;
+  const err = parsed.error;
+  //console.log('msg: ',parsed.text);
 
-  if (parsed.error) {
-    errorMsg.innerHTML = `<code>${JSON.stringify(parsed, null, 2)}</code>`;
-    
+  if (err) {
+    document.getElementById("error-msg").innerHTML = `<code>${JSON.stringify(parsed, null, 2)}</code>`;    
+    setTimeout(function(){ doc.innerHTML="" }, 6000);
     return
   }
   fillpuzzle(parsed.solution);
-  writeInfo("error-msg", msg);
+  if(msg)writeInfo("error-msg", msg);
+ // if(err) writeInfo("error-msg", err);
+  //setTimeout(function(){ doc.innerHTML=msg }, 0);
+  if(err || msg) setTimeout(function(){ doc.innerHTML="" }, 2000);
+  //const myTimeout = setInterval(writeInfo("error-msg", msg), 3000);
+  else {
+    writeInfo("error", "hello");
+  }
+
+  
+  //writeInfo("error-msg", msg);
 }
 
 function writeInfo(id, msg ){
   let doc = document.getElementById(id);
-  doc.innerText = msg;
+  doc.innerHTML = msg;
 }
 
 async function getChecked() {
   const stuff = {"puzzle": textArea.value, "coordinate": coordInput.value, "value": valInput.value}
-    const data = await fetch("/api/check", {
+    const checkdata = await fetch("/api/check", {
     method: "POST",
     headers: {
       "Accept": "application/json",
@@ -72,10 +80,15 @@ async function getChecked() {
     },
     body: JSON.stringify(stuff)
   })
-  const parsed = await data.json();
-  errorMsg.innerHTML = `<code>${JSON.stringify(parsed, null, 2)}</code>`;
+  const checked = await checkdata.json();
+  if(checked) {
+    errorMsg.innerHTML = `<code>${JSON.stringify(checked, null, 2)}</code>`;
+    setTimeout(function(){ doc.innerHTML="" }, 6000);
+  }
+  else{errorMsg.innerHTML = "";
+  }
+ 
+ // errorMsg.innerHTML = `<code>${JSON.stringify(checked, null, 2)}</code>`;
 }
-
-
 document.getElementById("solve-button").addEventListener("click", getSolved)
 document.getElementById("check-button").addEventListener("click", getChecked)

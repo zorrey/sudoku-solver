@@ -14,6 +14,10 @@ module.exports = function (app) {
   app.route('/api/check')
     .post((req, res) => {
       console.log("req.body - check:", req.body);
+      const {puzzle, coordinate, value} = req.body;
+      if(!solver.validate(puzzle)) return res.json({ error: 'Expected puzzle to be 81 characters long' })
+
+      
 
     });
     
@@ -25,7 +29,7 @@ module.exports = function (app) {
         console.log('error: Required field missing' );
         return res.json({error: 'Required field missing' });     
       }
-      if(puzzle.length !=81) { 
+      if(!solver.validate(puzzle)) { 
         console.log(' error: Expected puzzle to be 81 characters long ' );
         return res.json({ error: 'Expected puzzle to be 81 characters long' });     
       }
