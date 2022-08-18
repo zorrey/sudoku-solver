@@ -80,15 +80,13 @@ async function getChecked() {
     },
     body: JSON.stringify(stuff)
   })
-  const checked = await checkdata.json();
-  if(checked) {
+  let checked = await checkdata.json();
     errorMsg.innerHTML = `<code>${JSON.stringify(checked, null, 2)}</code>`;
-    setTimeout(function(){ doc.innerHTML="" }, 6000);
-  }
-  else{errorMsg.innerHTML = "";
-  }
+    console.log('checked', checked['valid'])
  
- // errorMsg.innerHTML = `<code>${JSON.stringify(checked, null, 2)}</code>`;
+    //console.log('no error', checked.valid);
+    //clearTimeout(m1);
+  
 }
 document.getElementById("solve-button").addEventListener("click", getSolved)
 document.getElementById("check-button").addEventListener("click", getChecked)
