@@ -11,7 +11,6 @@ document.addEventListener("DOMContentLoaded", () => {
   fillpuzzle(textArea.value);
 });
 
-
 textArea.addEventListener("input", () => {
   fillpuzzle(textArea.value);
 });
@@ -59,9 +58,7 @@ async function getSolved() {
   //const myTimeout = setInterval(writeInfo("error-msg", msg), 3000);
   else {
     writeInfo("error", "hello");
-  }
-
-  
+  }  
   //writeInfo("error-msg", msg);
 }
 
@@ -82,11 +79,10 @@ async function getChecked() {
   })
   let checked = await checkdata.json();
     errorMsg.innerHTML = `<code>${JSON.stringify(checked, null, 2)}</code>`;
-    console.log('checked', checked['valid'])
- 
+    console.log('checked', checked['valid']) 
     //console.log('no error', checked.valid);
-    //clearTimeout(m1);
-  
+    //clearTimeout(m1);  
 }
+
 document.getElementById("solve-button").addEventListener("click", getSolved)
 document.getElementById("check-button").addEventListener("click", getChecked)

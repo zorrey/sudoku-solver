@@ -4,10 +4,19 @@ class SudokuSolver {
 
   validate(puzzleString) {
     if(puzzleString.length != 81)
-    return false
+    return false;
     else return true;
   }
-
+  validChar(puzzleString){
+    if((/[^1-9.]/g.test(puzzleString))) 
+      return false;
+    return true;
+  }
+  validValue(value){
+    if(!value) return false;
+    if(/[^1-9]{1}/.test(value)) return false;
+    return true;
+  }
   isCellVoid(matrix) {
     let cells = {isZero: true, row: -1, col:-1};
     //let matrix = this.matrixCreator(puzzleString);
@@ -26,6 +35,7 @@ class SudokuSolver {
     }
     return cells;
   }
+
   checkCoord(coord){
     if(coord.length != 2) return false;
     let co = coord.split("");
@@ -33,7 +43,10 @@ class SudokuSolver {
     if(/[^1-9]/.test(co[1])) return false;
     return true;
   }
+
   returnCoord(coord){
+    if(!this.checkCoord(coord)) return false;
+
     let co = coord.split("");
     let rowNumber = { A: 1,
                       B: 2,
@@ -49,20 +62,19 @@ class SudokuSolver {
     return  {row: rowNumber[rowLetter] - 1, col: parseInt(co[1]) - 1};
   }
 
-
   checkRowPlacement(puzzleString, row, column, value) {
+   if(row==undefined || column==undefined || !this.validValue(value) || !puzzleString) return false;
     let matrix = [...this.matrixCreator(puzzleString)];
-
+   
           //console.log('matrix', matrix);
           //console.log('row', matrix[row]);
 
     for(let j=0; j<9; j++){
       if(j != column){
-        console.log('j, row, col: ', j , row , column)
-
+        //console.log('j, row, col: ', j , row , column)
         if(matrix[row][j]== parseInt(value)){
-          console.log('matrix[row][j]== parseInt(value), valu, el==value: ', matrix[row][j]== parseInt(value))
-          return false;   break;       
+          //console.log('matrix[row][j]== parseInt(value), valu, el==value: ', matrix[row][j]== parseInt(value))
+          return false;          
             }           
           }        
         }    
@@ -70,6 +82,7 @@ class SudokuSolver {
       }
 
   checkColPlacement(puzzleString, row, column, value) {
+    if(row==undefined || column==undefined || !this.validValue(value) || !puzzleString) return false;
     let matrix = [...this.matrixCreator(puzzleString)];
     for (let i=0; i<9; i++){
       if(i!=row){
@@ -79,8 +92,8 @@ class SudokuSolver {
     return true;
   }
   
-
   checkRegionPlacement(puzzleString, row, column, value) {
+    if(row==undefined || column==undefined || !this.validValue(value) || !puzzleString) return false;
     let matrix = [...this.matrixCreator(puzzleString)];
     let rStart= row - row % 3;
     let cStart= column - column % 3;
@@ -131,7 +144,8 @@ class SudokuSolver {
       return valid;
     } */ //end checkSum
 
-    checkInputPuzzle(data){
+    checkInputPuzzle(puzzleString){
+      let data = [...this.matrixCreator(puzzleString)];
       for (let i=0; i<9; i++){
         for(let j=0; j<9 ; j++){
           if(data[i][j]!=0){
@@ -142,7 +156,7 @@ class SudokuSolver {
            // console.log('row, col, num', row, col, num)
            // console.log('isUnique', this.isUnique(data, row, col,num))
             if(this.isUnique(data, row, col, num)==false) {
-              return false;
+              return false; 
             }
             else data[i][j]=num;
         }
@@ -157,7 +171,7 @@ class SudokuSolver {
     //check row
     for(let j=0; j<9; j++){
       if (matrix[row][j]==num)
-      return false; break;
+      return false;
     };
     //check column
     for(let r=0;r<9;r++){
@@ -177,11 +191,11 @@ class SudokuSolver {
   }
 
   solveSudoku(matrix) {   
-    let flag = true;
+    //let flag = true;
     let row = this.isCellVoid(matrix).row;
     let col = this.isCellVoid(matrix).col;
-    if(this.checkInputPuzzle(matrix) == false){return false};
-    if(matrix==[] || !matrix) return console.log('error: string invalid');
+    if(this.checkInputPuzzle(this.stringReturn(matrix)) == false){return false};
+    if(matrix==[] || !matrix) return false;
     //if(!this.checkInputPuzzle(matrix)) return false;
 
     if(this.isCellVoid(matrix).isZero) return true;    
@@ -200,18 +214,20 @@ class SudokuSolver {
         else 
           matrix[row][col] = 0;      
         }  
-        if(this.checkInputPuzzle(matrix)) continue
+        if(this.checkInputPuzzle(this.stringReturn(matrix))) continue
         else return false;
     }    
     return false;    
   }
 solve(puzzleString){
+  
+if(!this.validate(puzzleString) || !this.validChar(puzzleString) || !this.checkInputPuzzle(puzzleString)) return false
   let matrix = [...this.matrixCreator(puzzleString)];
   let datapuzzle = this.solveSudoku(matrix);
   //console.log('matrix', matrix)  
 
   if(datapuzzle) {
-    if(datapuzzle === true) return true;
+  //  if(datapuzzle === true) return true;
     console.log(this.stringReturn(datapuzzle))
     return this.stringReturn(datapuzzle);
   }
@@ -236,7 +252,7 @@ matrixCreator(puzzleString){
 }
 
 stringReturn(datapuzzle){
-  console.log('datapuzzle', datapuzzle)
+  //console.log('datapuzzle', datapuzzle)
   return datapuzzle.reduce((acc, item) =>{
    item = [...item.map(el => {
       if(el == 0) el = '.';
