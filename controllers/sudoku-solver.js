@@ -14,7 +14,9 @@ class SudokuSolver {
   }
   validValue(value){
     if(!value) return false;
-    if(/[^1-9]{1}/.test(value)) return false;
+    if(value.toString().length != 1) return false;
+    if(/[^1-9]/.test(value)) return false;
+    if(parseInt(value)<1 || parseInt(value)>9) return false;
     return true;
   }
   isCellVoid(matrix) {

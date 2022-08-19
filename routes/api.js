@@ -45,7 +45,7 @@ app.route('/api/check')
   app.route('/api/solve')
     .post((req, res) => {
       const { puzzle } = req.body;
-      //console.log('req.body: ', req.body);
+      console.log('req.body: ', req.body);
       if(!puzzle) { 
         console.log('error: Required field missing' );
         return res.json({error: 'Required field missing' });     
